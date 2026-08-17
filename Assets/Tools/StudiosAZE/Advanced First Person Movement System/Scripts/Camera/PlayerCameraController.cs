@@ -30,6 +30,8 @@ namespace AZE.AdvancedFirstPerson
 
         private void HandleRotation()
         {
+            if (Cursor.lockState != CursorLockMode.Locked) return;
+
             Vector2 lookInput = inputHandler.LookInput;
             if (lookInput.sqrMagnitude < 0.0001f) return;
 

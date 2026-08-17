@@ -3,8 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HeistHUDManager : MonoBehaviour
-{
+public class HeistHUDManager : MonoBehaviour {
   public static HeistHUDManager Instance { get; private set; }
 
   [Header("References")]
@@ -15,60 +14,53 @@ public class HeistHUDManager : MonoBehaviour
   [SerializeField] private TextMeshProUGUI interactionPromptText;
   [SerializeField] private TextMeshProUGUI weightMeterText;
   [SerializeField] private TextMeshProUGUI toastNotificationText;
-  [SerializeField] private Image crosshairDot;
+  // [SerializeField] private Image crosshairDot;
+  [SerializeField] private TMP_FontAsset hudFont; // Assign in Inspector
 
   private Coroutine activeToastCoroutine;
 
-  private void Awake()
-  {
-    if (Instance != null && Instance != this)
-    {
+  private void Awake() {
+    if (Instance != null && Instance != this) {
       Destroy(gameObject);
       return;
     }
+
     Instance = this;
 
     EnsureUIReferences();
   }
 
-  private void OnEnable()
-  {
+  private void OnEnable() {
     Inventory.OnItemCollected += HandleItemCollected;
     Inventory.OnInventoryMessage += ShowToastMessage;
   }
 
-  private void OnDisable()
-  {
+  private void OnDisable() {
     Inventory.OnItemCollected -= HandleItemCollected;
     Inventory.OnInventoryMessage -= ShowToastMessage;
   }
 
-  private void Start()
-  {
-    if (playerInteract == null)
-    {
+  private void Start() {
+    if (playerInteract == null) {
       playerInteract = FindFirstObjectByType<PlayerInteract>();
     }
 
     UpdateWeightMeter();
   }
 
-  private void Update()
-  {
+  private void Update() {
     UpdateInteractionPrompt();
     UpdateWeightMeter();
   }
 
-  private void UpdateInteractionPrompt()
-  {
+  private void UpdateInteractionPrompt() {
     if (interactionPromptText == null) return;
 
-    if (playerInteract != null && playerInteract.CurrentHoverItem != null)
-    {
+    if (playerInteract != null && playerInteract.CurrentHoverItem != null) {
       var itemData = playerInteract.CurrentHoverItem.itemData;
-      if (itemData != null)
-      {
-        interactionPromptText.text = $"[E] Take {itemData.itemName} <color=#FFD700>(${itemData.saleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.weight:0.#} kg</color></size>";
+      if (itemData != null) {
+        interactionPromptText.text =
+          $"[E] Take {itemData.itemName} <color=#FFD700>(${itemData.saleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.weight:0.#} kg</color></size>";
         interactionPromptText.gameObject.SetActive(true);
         return;
       }
@@ -77,38 +69,33 @@ public class HeistHUDManager : MonoBehaviour
     interactionPromptText.gameObject.SetActive(false);
   }
 
-  private void UpdateWeightMeter()
-  {
+  private void UpdateWeightMeter() {
     if (weightMeterText == null || Inventory.Instance == null) return;
 
     float current = Inventory.Instance.CurrentWeight;
     float max = Inventory.Instance.maxWeight;
     int count = Inventory.Instance.collectedFurniture.Count;
 
-    weightMeterText.text = $"<size=80%>LOOT BAG</size>\n<b>{current:0.#} / {max:0.#} kg</b>  ({count} items)";
+    weightMeterText.text = $"<size=100%>LOOT BAG</size>\n<b>{current:0.#} / {max:0.#} kg</b> ({count} items)";
   }
 
-  private void HandleItemCollected(FurnitureItem item)
-  {
-    if (item != null)
-    {
+  private void HandleItemCollected(FurnitureItem item) {
+    if (item != null) {
       ShowToastMessage($"<color=#55FF55>+ {item.itemName}</color> ({item.weight:0.#} kg, ${item.saleValue})");
     }
   }
 
-  public void ShowToastMessage(string message)
-  {
+  public void ShowToastMessage(string message) {
     if (toastNotificationText == null) return;
 
-    if (activeToastCoroutine != null)
-    {
+    if (activeToastCoroutine != null) {
       StopCoroutine(activeToastCoroutine);
     }
+
     activeToastCoroutine = StartCoroutine(AnimateToast(message));
   }
 
-  private IEnumerator AnimateToast(string message)
-  {
+  private IEnumerator AnimateToast(string message) {
     toastNotificationText.text = message;
     toastNotificationText.gameObject.SetActive(true);
     toastNotificationText.canvasRenderer.SetAlpha(1f);
@@ -117,8 +104,7 @@ public class HeistHUDManager : MonoBehaviour
 
     float fadeTime = 0.5f;
     float elapsed = 0f;
-    while (elapsed < fadeTime)
-    {
+    while (elapsed < fadeTime) {
       elapsed += Time.deltaTime;
       float alpha = Mathf.Lerp(1f, 0f, elapsed / fadeTime);
       toastNotificationText.canvasRenderer.SetAlpha(alpha);
@@ -128,15 +114,12 @@ public class HeistHUDManager : MonoBehaviour
     toastNotificationText.gameObject.SetActive(false);
   }
 
-  private void EnsureUIReferences()
-  {
-    if (hudCanvas == null)
-    {
+  private void EnsureUIReferences() {
+    if (hudCanvas == null) {
       hudCanvas = FindFirstObjectByType<Canvas>();
     }
 
-    if (hudCanvas == null)
-    {
+    if (hudCanvas == null) {
       var canvasObj = new GameObject("HUD_Canvas", typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
       hudCanvas = canvasObj.GetComponent<Canvas>();
       hudCanvas.renderMode = RenderMode.ScreenSpaceOverlay;
@@ -147,26 +130,25 @@ public class HeistHUDManager : MonoBehaviour
     }
 
     // Build Reticle if missing
-    if (crosshairDot == null)
-    {
-      var dotObj = new GameObject("Reticle", typeof(RectTransform), typeof(Image));
-      dotObj.transform.SetParent(hudCanvas.transform, false);
-      crosshairDot = dotObj.GetComponent<Image>();
-      crosshairDot.color = new Color(1f, 1f, 1f, 0.6f);
-      var rect = dotObj.GetComponent<RectTransform>();
-      rect.sizeDelta = new Vector2(4f, 4f);
-      rect.anchoredPosition = Vector2.zero;
-    }
+    // if (crosshairDot == null) {
+    //   var dotObj = new GameObject("Reticle", typeof(RectTransform), typeof(Image));
+    //   dotObj.transform.SetParent(hudCanvas.transform, false);
+    //   crosshairDot = dotObj.GetComponent<Image>();
+    //   crosshairDot.color = new Color(1f, 1f, 1f, 0.6f);
+    //   var rect = dotObj.GetComponent<RectTransform>();
+    //   rect.sizeDelta = new Vector2(4f, 4f);
+    //   rect.anchoredPosition = Vector2.zero;
+    // }
 
     // Build Interaction Prompt Text if missing
-    if (interactionPromptText == null)
-    {
+    if (interactionPromptText == null) {
       var promptObj = new GameObject("InteractionPrompt", typeof(RectTransform), typeof(TextMeshProUGUI));
       promptObj.transform.SetParent(hudCanvas.transform, false);
       interactionPromptText = promptObj.GetComponent<TextMeshProUGUI>();
       interactionPromptText.alignment = TextAlignmentOptions.Center;
       interactionPromptText.fontSize = 24;
       interactionPromptText.color = Color.white;
+      interactionPromptText.font = hudFont;
       var rect = promptObj.GetComponent<RectTransform>();
       rect.anchoredPosition = new Vector2(0f, -80f);
       rect.sizeDelta = new Vector2(600f, 100f);
@@ -174,30 +156,30 @@ public class HeistHUDManager : MonoBehaviour
     }
 
     // Build Weight Meter Text if missing
-    if (weightMeterText == null)
-    {
+    if (weightMeterText == null) {
       var weightObj = new GameObject("WeightMeter", typeof(RectTransform), typeof(TextMeshProUGUI));
       weightObj.transform.SetParent(hudCanvas.transform, false);
       weightMeterText = weightObj.GetComponent<TextMeshProUGUI>();
-      weightMeterText.alignment = TextAlignmentOptions.BottomRight;
-      weightMeterText.fontSize = 22;
+      weightMeterText.alignment = TextAlignmentOptions.BottomLeft;
+      weightMeterText.fontSize = 30;
+      weightMeterText.font = hudFont;
       weightMeterText.color = new Color(0.9f, 0.9f, 0.9f, 1f);
       var rect = weightObj.GetComponent<RectTransform>();
       rect.anchorMin = new Vector2(1f, 0f);
       rect.anchorMax = new Vector2(1f, 0f);
       rect.pivot = new Vector2(1f, 0f);
-      rect.anchoredPosition = new Vector2(-40f, 40f);
+      rect.anchoredPosition = new Vector2(-1445f, 55f);
       rect.sizeDelta = new Vector2(400f, 100f);
     }
 
     // Build Toast Notification Text if missing
-    if (toastNotificationText == null)
-    {
+    if (toastNotificationText == null) {
       var toastObj = new GameObject("ToastNotification", typeof(RectTransform), typeof(TextMeshProUGUI));
       toastObj.transform.SetParent(hudCanvas.transform, false);
       toastNotificationText = toastObj.GetComponent<TextMeshProUGUI>();
       toastNotificationText.alignment = TextAlignmentOptions.Center;
       toastNotificationText.fontSize = 20;
+      toastNotificationText.font = hudFont;
       toastNotificationText.color = Color.white;
       var rect = toastObj.GetComponent<RectTransform>();
       rect.anchoredPosition = new Vector2(0f, -180f);
