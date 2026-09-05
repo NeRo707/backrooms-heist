@@ -3,9 +3,9 @@
 namespace TrollProps {
   public class TrollProp : MonoBehaviour {
     [Header("Target Settings")]
-    public Transform propToRotate; // The object that will look at the player
-    public bool lockYAxis = true; // Keeps the prop upright instead of tilting up/down
-    public bool triggerOnce = true;
+    [SerializeField] private Transform propToRotate; // The object that will look at the player
+    [SerializeField] private bool lockYAxis = true; // Keeps the prop upright instead of tilting up/down
+    [SerializeField] private bool triggerOnce = true;
 
     private bool hasTriggered = false;
 

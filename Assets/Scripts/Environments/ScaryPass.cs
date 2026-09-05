@@ -2,7 +2,7 @@
 using UnityEngine;
 
   public class ScaryPass : MonoBehaviour {
-    public GameObject scary;
+    [SerializeField] private GameObject scary;
 
     private void OnTriggerEnter(Collider other) {
       if(other.CompareTag("Player")) {

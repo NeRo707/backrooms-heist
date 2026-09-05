@@ -2,10 +2,10 @@ using UnityEngine;
 
 public class PassGate : MonoBehaviour {
   [Tooltip("The wall collider to pass through. Leave empty to auto-detect on Start.")]
-  public Collider mapCollider;
+  [SerializeField] private Collider mapCollider;
 
   [Tooltip("How far to raycast when searching for the wall.")]
-  public float wallDetectRange = 2f;
+  [SerializeField] private float wallDetectRange = 2f;
 
   void Start() {
     if (mapCollider == null) {
