@@ -173,7 +173,7 @@ namespace AZE.AdvancedFirstPerson
 
         public bool CanDodge()
         {
-            if (Time.time >= LastDodgeTime + DodgeCooldown && IsGrounded && !InputHandler.CrouchTriggered)
+            if (useDodge && Time.time >= LastDodgeTime + DodgeCooldown && IsGrounded && !InputHandler.CrouchTriggered)
             {
                 return true;
             }

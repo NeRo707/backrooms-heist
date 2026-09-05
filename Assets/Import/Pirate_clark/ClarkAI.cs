@@ -41,7 +41,7 @@ public class ClarkAI : MonoBehaviour
     public float catchDistance = 1.8f;
     public AudioSource entityAudioSource;
     public VideoClip bitingVideoClip;
-    private bool isCatching = false;
+    public bool IsCatching { get; private set; } = false;
 
     void Start()
     {
@@ -55,7 +55,7 @@ public class ClarkAI : MonoBehaviour
 
     void Update()
     {
-        if (target == null || isCatching) return; // Stop thinking if catching the player
+        if (target == null || IsCatching) return; // Stop thinking if catching the player
 
         bool canSeePlayer = CanSeePlayer();
 
@@ -140,8 +140,8 @@ public class ClarkAI : MonoBehaviour
 
     private void CatchPlayer()
     {
-        if (isCatching) return;
-        isCatching = true;
+        if (IsCatching) return;
+        IsCatching = true;
 
         // Stop the agent from sliding when it catches the player
         navMeshAgent.isStopped = true;
