@@ -3,18 +3,18 @@ using UnityEngine;
 
 public class LookTriggerAudio : MonoBehaviour {
   [Header("Settings")]
-  public Camera playerCamera;
-  public AudioSource audioSource;
+  [SerializeField] private Camera playerCamera;
+  [SerializeField] private AudioSource audioSource;
 
   [Header("Range")]
-  public float triggerRadius = 3f;
+  [SerializeField] private float triggerRadius = 3f;
 
   [Header("Line of Sight (Optional)")]
-  public bool checkLineOfSight = true;
-  public LayerMask obstacleLayers;
+  [SerializeField] private bool checkLineOfSight = true;
+  [SerializeField] private LayerMask obstacleLayers;
 
   [Header("Viewport Margins")]
-  [Range(0f, 0.5f)] public float margin = 0.05f;
+  [Range(0f, 0.5f)] [SerializeField] private float margin = 0.05f;
 
   private Renderer objectRenderer;
 
