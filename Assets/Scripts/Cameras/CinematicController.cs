@@ -3,9 +3,9 @@ using UnityEngine.Playables; // Required for Timeline
 
 public class CinematicController : MonoBehaviour {
   [Header("Cinematic Reference")]
-  public PlayableDirector director;
+  [SerializeField] private PlayableDirector director;
   private bool isPlaying = false;
-  public GameObject clark;
+  [SerializeField] private GameObject clark;
 
   void Update() {
     if (isPlaying && Input.GetKeyDown(KeyCode.Space)) {

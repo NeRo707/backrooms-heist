@@ -4,12 +4,12 @@ using Unity.Cinemachine;
 public class CamcorderManualZoom : MonoBehaviour
 {
     [Header("Camera Settings")]
-    public CinemachineCamera vCam;
+    [SerializeField] private CinemachineCamera vCam;
 
     [Header("Zoom Limits")]
-    public float maxFOV = 80f;
-    public float minFOV = 30f;
-    public float zoomSpeed = 25f;
+    [SerializeField] private float maxFOV = 80f;
+    [SerializeField] private float minFOV = 30f;
+    [SerializeField] private float zoomSpeed = 25f;
 
     private float currentFOV;
     private bool isZoomingIn = false;
