@@ -4,10 +4,11 @@ using UnityEngine.InputSystem;
 
 public class PlayerInteract : MonoBehaviour {
   [Header("Settings")]
-  public float interactRange = 3.5f;
+  [SerializeField] private float interactRange = 3.5f;
   [Tooltip("Radius of the sphere tip on the cast. Bigger = more forgiving.")]
-  public float interactRadius = 0.3f;
-  public Camera playerCamera;
+  [SerializeField] private float interactRadius = 0.3f;
+  [SerializeField] private Camera playerCamera;
+  public Camera PlayerCamera { get => playerCamera; set => playerCamera = value; }
 
   public PickupItem CurrentHoverItem { get; private set; }
 
