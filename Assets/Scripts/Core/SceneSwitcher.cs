@@ -9,8 +9,8 @@ public class SceneSwitcher : MonoBehaviour
     Backrooms,
   }
 
-  public SceneOptions sceneToLoad;
-  public LoadingScene loadingSceneController;
+  [SerializeField] private SceneOptions sceneToLoad;
+  [SerializeField] private LoadingScene loadingSceneController;
 
   private void Start()
   {
