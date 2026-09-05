@@ -10,8 +10,10 @@ public enum VHSSound
 [Serializable]
 public struct SoundMapping
 {
-  public VHSSound soundType;
-  public AudioClip clip;
+  [SerializeField] private VHSSound soundType;
+  public VHSSound SoundType { get => soundType; set => soundType = value; }
+  [SerializeField] private AudioClip clip;
+  public AudioClip Clip { get => clip; set => clip = value; }
 }
 
 public class AudioManager : MonoBehaviour
@@ -19,7 +21,7 @@ public class AudioManager : MonoBehaviour
   public static AudioManager Instance { get; private set; }
 
   [Header("Audio Settings")]
-  public SoundMapping[] sounds;
+  [SerializeField] private SoundMapping[] sounds;
 
   private AudioSource audioSource;
 
@@ -43,12 +45,12 @@ public class AudioManager : MonoBehaviour
   {
     foreach (SoundMapping mapping in sounds)
     {
-      if (mapping.soundType == type && mapping.clip != null)
+      if (mapping.SoundType == type && mapping.Clip != null)
       {
         // If it's already playing this exact clip, don't restart it
-        if (audioSource.clip == mapping.clip && audioSource.isPlaying) return;
+        if (audioSource.clip == mapping.Clip && audioSource.isPlaying) return;
 
-        audioSource.clip = mapping.clip;
+        audioSource.clip = mapping.Clip;
         audioSource.loop = true;
         audioSource.Play();
         return;
@@ -72,9 +74,9 @@ public class AudioManager : MonoBehaviour
   {
     foreach (SoundMapping mapping in sounds)
     {
-      if (mapping.soundType == type && mapping.clip != null)
+      if (mapping.SoundType == type && mapping.Clip != null)
       {
-        audioSource.PlayOneShot(mapping.clip);
+        audioSource.PlayOneShot(mapping.Clip);
         return;
       }
     }
