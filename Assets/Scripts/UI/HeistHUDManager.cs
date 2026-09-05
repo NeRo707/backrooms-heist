@@ -57,10 +57,10 @@ public class HeistHUDManager : MonoBehaviour {
     if (interactionPromptText == null) return;
 
     if (playerInteract != null && playerInteract.CurrentHoverItem != null) {
-      var itemData = playerInteract.CurrentHoverItem.itemData;
+      var itemData = playerInteract.CurrentHoverItem.ItemData;
       if (itemData != null) {
         interactionPromptText.text =
-          $"[E] Take {itemData.itemName} <color=#FFD700>(${itemData.saleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.weight:0.#} kg</color></size>";
+          $"[E] Take {itemData.ItemName} <color=#FFD700>(${itemData.SaleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.Weight:0.#} kg</color></size>";
         interactionPromptText.gameObject.SetActive(true);
         return;
       }
@@ -73,15 +73,15 @@ public class HeistHUDManager : MonoBehaviour {
     if (weightMeterText == null || Inventory.Instance == null) return;
 
     float current = Inventory.Instance.CurrentWeight;
-    float max = Inventory.Instance.maxWeight;
-    int count = Inventory.Instance.collectedFurniture.Count;
+    float max = Inventory.Instance.MaxWeight;
+    int count = Inventory.Instance.CollectedFurniture.Count;
 
     weightMeterText.text = $"<size=100%>LOOT BAG</size>\n<b>{current:0.#} / {max:0.#} kg</b> ({count} items)";
   }
 
   private void HandleItemCollected(FurnitureItem item) {
     if (item != null) {
-      ShowToastMessage($"<color=#55FF55>+ {item.itemName}</color> ({item.weight:0.#} kg, ${item.saleValue})");
+      ShowToastMessage($"<color=#55FF55>+ {item.ItemName}</color> ({item.Weight:0.#} kg, ${item.SaleValue})");
     }
   }
 

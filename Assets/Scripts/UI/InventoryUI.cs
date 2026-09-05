@@ -71,24 +71,24 @@ public class InventoryUI : MonoBehaviour
     var inv = Inventory.Instance;
 
     // ── header ──
-    _headerText.text = $"INVENTORY   <size=70%><color=#AAAAAA>Lv {inv.playerLevel}</color></size>";
+    _headerText.text = $"INVENTORY   <size=70%><color=#AAAAAA>Lv {inv.PlayerLevel}</color></size>";
 
     // ── stats block ──
-    float pct = inv.maxWeight > 0 ? inv.CurrentWeight / inv.maxWeight : 0f;
+    float pct = inv.MaxWeight > 0 ? inv.CurrentWeight / inv.MaxWeight : 0f;
     string weightBar = BuildBar(pct, 14);
 
     _statsText.text =
-      $"<color=#FFD700>BANK</color>  <b>${inv.playerMoney:N0}</b>\n" +
+      $"<color=#FFD700>BANK</color>  <b>${inv.PlayerMoney:N0}</b>\n" +
       $"<color=#FFD700>RUN VALUE</color>  <b><color=#55FF55>${inv.TotalRunValue:N0}</color></b>\n" +
       $"\n" +
-      $"<color=#FFD700>WEIGHT</color>  {inv.CurrentWeight:0.#} / {inv.maxWeight:0.#} kg  ({inv.collectedFurniture.Count} items)\n" +
+      $"<color=#FFD700>WEIGHT</color>  {inv.CurrentWeight:0.#} / {inv.MaxWeight:0.#} kg  ({inv.CollectedFurniture.Count} items)\n" +
       $"<size=90%><color=#444444>{weightBar}</color></size>";
 
     // ── item list ──
     // Clear old rows
     foreach (Transform child in _itemListRoot) Destroy(child.gameObject);
 
-    if (inv.collectedFurniture.Count == 0)
+    if (inv.CollectedFurniture.Count == 0)
     {
       var empty = MakeRowText("  Nothing carried yet…", DimColor);
       empty.transform.SetParent(_itemListRoot, false);
@@ -97,13 +97,13 @@ public class InventoryUI : MonoBehaviour
     {
       // Group by item name + count
       var groups = new Dictionary<string, (int count, int value, float weight, FurnitureItem firstItem)>();
-      foreach (var item in inv.collectedFurniture)
+      foreach (var item in inv.CollectedFurniture)
       {
         if (item == null) continue;
-        if (!groups.ContainsKey(item.itemName))
-          groups[item.itemName] = (0, item.saleValue, item.weight, item);
-        var g = groups[item.itemName];
-        groups[item.itemName] = (g.count + 1, g.value, g.weight, g.firstItem);
+        if (!groups.ContainsKey(item.ItemName))
+          groups[item.ItemName] = (0, item.SaleValue, item.Weight, item);
+        var g = groups[item.ItemName];
+        groups[item.ItemName] = (g.count + 1, g.value, g.weight, g.firstItem);
       }
 
       foreach (var kvp in groups)
@@ -128,13 +128,13 @@ public class InventoryUI : MonoBehaviour
 
   private void DropIntoWorld(FurnitureItem item)
   {
-    if (item == null || item.prefab == null) return;
+    if (item == null || item.Prefab == null) return;
 
     Camera cam = Camera.main;
     if (cam == null)
     {
       var playerInteract = FindFirstObjectByType<PlayerInteract>();
-      if (playerInteract != null) cam = playerInteract.playerCamera;
+      if (playerInteract != null) cam = playerInteract.PlayerCamera;
     }
     if (cam == null) cam = FindFirstObjectByType<Camera>();
     if (cam == null) return;
@@ -156,7 +156,7 @@ public class InventoryUI : MonoBehaviour
     }
 
     Vector3 spawnPos = startPos + dropDir * dropDist;
-    Instantiate(item.prefab, spawnPos, Quaternion.identity);
+    Instantiate(item.Prefab, spawnPos, Quaternion.identity);
   }
 
   // ── helpers ─────────────────────────────────────────────────────
@@ -370,7 +370,7 @@ public class InventoryUI : MonoBehaviour
     btn.targetGraphic = img;
 
     btn.onClick.AddListener(() => {
-      Debug.Log($"[InventoryUI] Drop button clicked for {itemToDrop.itemName}");
+      Debug.Log($"[InventoryUI] Drop button clicked for {itemToDrop.ItemName}");
       if (Inventory.Instance != null && Inventory.Instance.RemoveItem(itemToDrop))
       {
         DropIntoWorld(itemToDrop);
