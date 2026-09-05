@@ -6,14 +6,18 @@ public class Inventory : MonoBehaviour
   public static Inventory Instance { get; private set; }
 
   [Header("Carry Capacity")]
-  [Min(0f)] public float maxWeight = 20f;
+  [Min(0f)] [SerializeField] private float maxWeight = 20f;
+  public float MaxWeight { get => maxWeight; set => maxWeight = value; }
 
   [Header("Progression")]
-  public int playerMoney = 0;
-  public int playerLevel = 1;
+  [SerializeField] private int playerMoney = 0;
+  public int PlayerMoney { get => playerMoney; set => playerMoney = value; }
+  [SerializeField] private int playerLevel = 1;
+  public int PlayerLevel { get => playerLevel; set => playerLevel = value; }
 
   [Header("Current Run")]
-  public List<FurnitureItem> collectedFurniture = new List<FurnitureItem>();
+  [SerializeField] private List<FurnitureItem> collectedFurniture = new List<FurnitureItem>();
+  public List<FurnitureItem> CollectedFurniture { get => collectedFurniture; set => collectedFurniture = value; }
 
   public float CurrentWeight { get; private set; }
   public float RemainingWeight => Mathf.Max(0f, maxWeight - CurrentWeight);
@@ -25,7 +29,7 @@ public class Inventory : MonoBehaviour
     {
       int total = 0;
       foreach (var item in collectedFurniture)
-        if (item != null) total += item.saleValue;
+        if (item != null) total += item.SaleValue;
       return total;
     }
   }
@@ -67,17 +71,17 @@ public class Inventory : MonoBehaviour
       return false;
     }
 
-    if (CurrentWeight + item.weight > maxWeight)
+    if (CurrentWeight + item.Weight > maxWeight)
     {
-      string msg = $"Too heavy! ({item.weight:0.#} kg exceeds remaining {RemainingWeight:0.#} kg)";
+      string msg = $"Too heavy! ({item.Weight:0.#} kg exceeds remaining {RemainingWeight:0.#} kg)";
       Debug.Log(msg);
       OnInventoryMessage?.Invoke(msg);
       return false;
     }
 
     collectedFurniture.Add(item);
-    CurrentWeight += item.weight;
-    Debug.Log($"Picked up: {item.itemName}. Carry weight: {CurrentWeight:0.##}/{maxWeight:0.##}");
+    CurrentWeight += item.Weight;
+    Debug.Log($"Picked up: {item.ItemName}. Carry weight: {CurrentWeight:0.##}/{maxWeight:0.##}");
     OnItemCollected?.Invoke(item);
     return true;
   }
@@ -104,7 +108,7 @@ public class Inventory : MonoBehaviour
     {
       if (item != null)
       {
-        CurrentWeight += item.weight;
+        CurrentWeight += item.Weight;
       }
     }
   }

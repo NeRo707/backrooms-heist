@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 
 public class PickupItem : MonoBehaviour {
-  public FurnitureItem itemData;
+  [SerializeField] private FurnitureItem itemData;
+  public FurnitureItem ItemData { get => itemData; set => itemData = value; }
 
   public void Collect() {
     // Try to add the item to the inventory
