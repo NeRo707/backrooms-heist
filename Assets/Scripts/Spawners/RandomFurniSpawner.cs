@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class RandomFurniSpawner : MonoBehaviour {
-  public List<Transform> furniPositions;
-  public List<GameObject> furniPrefabs;
-  public List<FurnitureItem> furnitureItems;
+  [SerializeField] private List<Transform> furniPositions;
+  [SerializeField] private List<GameObject> furniPrefabs;
+  [SerializeField] private List<FurnitureItem> furnitureItems;
 
 
   private void Start() {
@@ -33,7 +33,7 @@ public class RandomFurniSpawner : MonoBehaviour {
         pickupItem = spawnedFurniture.AddComponent<PickupItem>();
       }
 
-      pickupItem.itemData = furnitureItems[randomIndex];
+      pickupItem.ItemData = furnitureItems[randomIndex];
     }
   }
 }
