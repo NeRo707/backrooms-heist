@@ -1,0 +1,11 @@
+Model Information:
+* title:	Pennywise
+* source:	https://sketchfab.com/3d-models/pennywise-7a25c4f245164b318e6935f7264dd637
+* author:	Kernee (https://sketchfab.com/Kernee)
+
+Model License:
+* license type:	CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
+* requirements:	Author must be credited. No commercial use.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Pennywise" (https://sketchfab.com/3d-models/pennywise-7a25c4f245164b318e6935f7264dd637) by Kernee (https://sketchfab.com/Kernee) licensed under CC-BY-NC-4.0 (http://creativecommons.org/licenses/by-nc/4.0/)
