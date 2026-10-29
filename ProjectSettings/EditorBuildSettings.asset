@@ -11,6 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Backrooms.unity
     guid: 3b2fdb560cd830549a1060af551beda7
+  - enabled: 1
+    path: Assets/Scenes/MainMenu.unity
+    guid: 4c4f387ad59457840a10e772e7834865
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: baad02ed314ed994698079d6c595bcfc, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
