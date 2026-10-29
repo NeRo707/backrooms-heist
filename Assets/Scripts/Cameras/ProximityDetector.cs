@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -93,6 +93,14 @@ public class ProximityDetector : MonoBehaviour {
       }
     }
 
+    // Find all weeping angels
+    WeepingAngelAI[] angels = FindObjectsByType<WeepingAngelAI>(FindObjectsSortMode.None);
+    foreach (var a in angels) {
+      if (!a.IsCatching) {
+        activeTargets.Add(a.transform);
+      }
+    }
+
     // Find all triggers that haven't been triggered yet
     AnimTrigger[] triggers = FindObjectsByType<AnimTrigger>(FindObjectsSortMode.None);
     foreach (var t in triggers) {
@@ -118,6 +126,10 @@ public class ProximityDetector : MonoBehaviour {
       ClarkAI clark = target.GetComponent<ClarkAI>();
       if (clark != null && clark.IsCatching)
         continue; // Skip monster if it's currently catching player
+
+      WeepingAngelAI angel = target.GetComponent<WeepingAngelAI>();
+      if (angel != null && angel.IsCatching)
+        continue; // Skip angel if it's currently catching player
 
       float dist = Vector3.Distance(transform.position, target.position);
       if (dist < minDist) {

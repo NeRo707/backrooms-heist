@@ -34,6 +34,19 @@ public class FlashLight : MonoBehaviour {
     ApplyMode();
   }
 
+  // ── Battery system API ────────────────────────────────────────────────────
+  /// Read-only access to the current light mode (used by FlashlightBattery).
+  public LightMode CurrentMode => currentMode;
+
+  /// Forces the flashlight off and applies the change immediately.
+  /// Called by FlashlightBattery when the battery is fully depleted.
+  public void ForceOff()
+  {
+      currentMode = LightMode.Off;
+      ApplyMode();
+  }
+  // ──────────────────────────────────────────────────────────────────────────
+
   public void Switch() {
     CycleMode();
   }

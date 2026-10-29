@@ -56,13 +56,22 @@ public class HeistHUDManager : MonoBehaviour {
   private void UpdateInteractionPrompt() {
     if (interactionPromptText == null) return;
 
-    if (playerInteract != null && playerInteract.CurrentHoverItem != null) {
-      var itemData = playerInteract.CurrentHoverItem.ItemData;
-      if (itemData != null) {
-        interactionPromptText.text =
-          $"[E] Take {itemData.ItemName} <color=#FFD700>(${itemData.SaleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.Weight:0.#} kg</color></size>";
-        interactionPromptText.gameObject.SetActive(true);
-        return;
+    if (playerInteract != null) {
+      if (playerInteract.CurrentHoverItem != null) {
+        var itemData = playerInteract.CurrentHoverItem.ItemData;
+        if (itemData != null) {
+          interactionPromptText.text =
+            $"[E] Take {itemData.ItemName} <color=#FFD700>(${itemData.SaleValue})</color>\n<size=80%><color=#AAAAAA>{itemData.Weight:0.#} kg</color></size>";
+          interactionPromptText.gameObject.SetActive(true);
+          return;
+        }
+      } else if (playerInteract.CurrentInteractable != null) {
+        string prompt = playerInteract.CurrentInteractable.InteractPrompt;
+        if (!string.IsNullOrEmpty(prompt)) {
+          interactionPromptText.text = prompt;
+          interactionPromptText.gameObject.SetActive(true);
+          return;
+        }
       }
     }
 
@@ -76,7 +85,7 @@ public class HeistHUDManager : MonoBehaviour {
     float max = Inventory.Instance.MaxWeight;
     int count = Inventory.Instance.CollectedFurniture.Count;
 
-    weightMeterText.text = $"<size=100%>LOOT BAG</size>\n<b>{current:0.#} / {max:0.#} kg</b> ({count} items)";
+    weightMeterText.text = $"LOOT BAG\n{current:0.#} / {max:0.#} KG  ({count} items)";
   }
 
   private void HandleItemCollected(FurnitureItem item) {
@@ -116,7 +125,14 @@ public class HeistHUDManager : MonoBehaviour {
 
   private void EnsureUIReferences() {
     if (hudCanvas == null) {
-      hudCanvas = FindFirstObjectByType<Canvas>();
+      hudCanvas = GetComponent<Canvas>();
+      if (hudCanvas == null) {
+        var mainsCanvas = GameObject.Find("MAINS/UI/Canvas");
+        if (mainsCanvas != null) hudCanvas = mainsCanvas.GetComponent<Canvas>();
+      }
+      if (hudCanvas == null) {
+        hudCanvas = FindFirstObjectByType<Canvas>();
+      }
     }
 
     if (hudCanvas == null) {
@@ -161,15 +177,15 @@ public class HeistHUDManager : MonoBehaviour {
       weightObj.transform.SetParent(hudCanvas.transform, false);
       weightMeterText = weightObj.GetComponent<TextMeshProUGUI>();
       weightMeterText.alignment = TextAlignmentOptions.BottomLeft;
-      weightMeterText.fontSize = 30;
+      weightMeterText.fontSize = 32;
       weightMeterText.font = hudFont;
       weightMeterText.color = new Color(0.9f, 0.9f, 0.9f, 1f);
       var rect = weightObj.GetComponent<RectTransform>();
-      rect.anchorMin = new Vector2(1f, 0f);
-      rect.anchorMax = new Vector2(1f, 0f);
-      rect.pivot = new Vector2(1f, 0f);
-      rect.anchoredPosition = new Vector2(-1445f, 55f);
-      rect.sizeDelta = new Vector2(400f, 100f);
+      rect.anchorMin = new Vector2(0f, 0f);
+      rect.anchorMax = new Vector2(0f, 0f);
+      rect.pivot = new Vector2(0f, 0f);
+      rect.anchoredPosition = new Vector2(114f, 75f);
+      rect.sizeDelta = new Vector2(450f, 90f);
     }
 
     // Build Toast Notification Text if missing
