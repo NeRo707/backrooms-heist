@@ -24,10 +24,12 @@ public class BatteryPickup : MonoBehaviour, IInteractable {
   public void Interact(GameObject interactor) => Collect();
 
   [Header("Visuals")]
+  #pragma warning disable CS0414
   [Tooltip("Amplitude of the vertical bob in metres.")]
   [SerializeField] private float bobAmplitude = 0.15f;
   [Tooltip("Oscillation speed (radians per second).")]
   [SerializeField] private float bobSpeed = 2f;
+#pragma warning restore CS0414
 
   // -- Private ---------------------------------------------------------------
   private AudioSource _audioSource;

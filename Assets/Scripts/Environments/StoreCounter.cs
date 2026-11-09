@@ -234,7 +234,7 @@ public class StoreCounter : MonoBehaviour {
 
   private void ShowPrompt() {
     if (Inventory.Instance != null && !_isMenuOpen) {
-      HeistHUDManager.Instance?.ShowToastMessage("[E] Open Store Menu");
+      HeistHUDManager.Instance?.ShowToastMessage(promptMessage);
     }
   }
 

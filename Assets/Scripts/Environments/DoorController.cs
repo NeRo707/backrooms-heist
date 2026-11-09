@@ -128,6 +128,59 @@ public class DoorController : MonoBehaviour, IInteractable {
     }
   }
 
+  public bool IsOpen => _isOpen;
+  public bool IsLocked { get => isLocked; set => isLocked = value; }
+
+  /// <summary>
+  /// Forcibly slams the door shut at high speed and locks it.
+  /// </summary>
+  public void SlamShutAndLock(AudioClip slamSound = null, float slamSpeed = 8f) {
+    isLocked = true;
+    _isOpen = false;
+    if (_currentAnim != null) StopCoroutine(_currentAnim);
+    _currentAnim = StartCoroutine(AnimateDoorCustom(false, openAngle, slamSpeed, slamSound));
+  }
+
+  /// <summary>
+  /// Forcibly opens the door partially or fully (e.g. for scripted peek sequences).
+  /// </summary>
+  public void ForceOpen(float targetAngle = 30f, float speed = 1.5f, AudioClip sound = null) {
+    isLocked = false;
+    _isOpen = true;
+    if (_currentAnim != null) StopCoroutine(_currentAnim);
+    _currentAnim = StartCoroutine(AnimateDoorCustom(true, targetAngle, speed, sound));
+  }
+
+  private IEnumerator AnimateDoorCustom(bool opening, float angle, float speed, AudioClip customSound = null) {
+    _animating = true;
+    if (customSound != null) {
+      PlaySound(customSound);
+    } else {
+      AudioClip sfx = opening ? openSound : (creakSound != null ? creakSound : openSound);
+      PlaySound(sfx);
+    }
+
+    Quaternion targetRot = opening
+      ? _closedRot * Quaternion.AngleAxis(angle, rotationAxis)
+      : _closedRot;
+
+    while (Quaternion.Angle(doorPivot.localRotation, targetRot) > 0.5f) {
+      doorPivot.localRotation = Quaternion.Slerp(
+        doorPivot.localRotation, targetRot, speed * Time.deltaTime);
+
+      if (hingeOffset != Vector3.zero)
+        doorPivot.localPosition = _hingeInParent - doorPivot.localRotation * hingeOffset;
+
+      yield return null;
+    }
+
+    doorPivot.localRotation = targetRot;
+    if (hingeOffset != Vector3.zero)
+      doorPivot.localPosition = _hingeInParent - targetRot * hingeOffset;
+
+    _animating = false;
+  }
+
   // ── IInteractable Interaction ─────────────────────────────────────────────
   public void Interact(GameObject interactor) {
     if (_animating) return;

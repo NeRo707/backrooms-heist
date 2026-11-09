@@ -62211,7 +62211,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab134ebbb15648ba8fc57cfbef2f399a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneSwitcher
-  sceneToLoad: 1
+  sceneToLoad: 2
   loadingSceneController: {fileID: 75256290}
 --- !u!65 &983267875
 BoxCollider:

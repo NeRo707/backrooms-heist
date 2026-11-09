@@ -173,7 +173,7 @@ public class ClarkAI : MonoBehaviour
         if (HeistHUDManager.Instance != null) HeistHUDManager.Instance.ShowToastMessage("<color=#FF4444>BONKED! Caught by Entity — lost all carried loot!</color>");
 
         var loadingController = FindFirstObjectByType<LoadingScene>();
-        if (loadingController != null) loadingController.LoadScene(0);
+        if (loadingController != null) loadingController.LoadScene(1);
         else UnityEngine.SceneManagement.SceneManager.LoadScene("Store");
     }
 

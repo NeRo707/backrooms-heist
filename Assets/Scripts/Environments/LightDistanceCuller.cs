@@ -41,7 +41,7 @@ public class LightDistanceCuller : MonoBehaviour {
     Light[] allLights = GetComponentsInChildren<Light>(true);
     foreach (var l in allLights) {
       // Ignore directional lights (sun) and already baked lights
-      if (l.type != LightType.Directional && l.lightmapBakeType != LightmapBakeType.Baked) {
+      if (l.type != LightType.Directional && l.bakingOutput.lightmapBakeType != LightmapBakeType.Baked) {
         _lights.Add(new LightData {
           transform = l.transform,
           lightComponent = l

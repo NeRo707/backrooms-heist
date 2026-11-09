@@ -5,6 +5,7 @@ public class SceneSwitcher : MonoBehaviour
 {
   public enum SceneOptions
   {
+    Menu,
     Store,
     Backrooms,
   }
