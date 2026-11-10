@@ -105,6 +105,7 @@ public class BlackChamberSequence : MonoBehaviour {
   [SerializeField] private AudioSource endingAudioSource;
   [Tooltip("Cut lights to black right as the bonk lands.")]
   [SerializeField] private bool blackoutOnBonk = true;
+  [SerializeField] private Transform point;
 
   [Header("Player Reference (Optional)")]
   [SerializeField] private Transform playerTransform;
@@ -355,13 +356,17 @@ public class BlackChamberSequence : MonoBehaviour {
     yield return new WaitForSeconds(0.4f);
 
     // ── Step 9: Restart Current Scene (Respawn at beginning) ────────────────
-    int activeIndex = SceneManager.GetActiveScene().buildIndex;
-    if (activeIndex >= 0) {
-      SceneManager.LoadScene(activeIndex);
-    } else {
-      string activeName = SceneManager.GetActiveScene().name;
-      SceneManager.LoadScene(activeName);
-    }
+    // - teleport player to location
+      if (point) {
+        playerTransform.position = point.position;
+      }
+    // int activeIndex = SceneManager.GetActiveScene().buildIndex;
+    // if (activeIndex >= 0) {
+    //   SceneManager.LoadScene(activeIndex);
+    // } else {
+    //   string activeName = SceneManager.GetActiveScene().name;
+    //   SceneManager.LoadScene(activeName);
+    // }
   }
 
   private IEnumerator FlickerRedLamp(int times) {
